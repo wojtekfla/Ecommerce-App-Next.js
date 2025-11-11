@@ -14,56 +14,59 @@ export default function HeroSlider() {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <section className="w-full bg-[var(--color-black-one)] flex flex-col gap-4 sm:gap-6 px-10 sm:px-10">
-      <div className="relative w-full bg-gradient-to-r from-[var(--color-black-two)] to-[var(--color-black-three)] border border-[var(--color-grey-one)] sm:border sm:rounded-md overflow-hidden">
-        {/* Strzałka w lewo */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--color-orange-one)] text-black p-1 rounded shadow-md hover:bg-[var(--color-orange-one)] transition cursor-pointer z-10"
-        >
-          <ChevronLeft className="w-5 h-10 cursor-pointer" />
-        </button>
+    // <section className="max-w-[1360px] bg-[var(--color-black-one)] flex flex-col gap-4 sm:gap-6 px-4 sm:px-6 lg:px-10">
+    <section className="max-w-[1360px] bg-[var(--color-black-one)] flex flex-col gap-4 sm:gap-8 px-4">
+      <div className="relative bg-gradient-to-r from-[var(--color-black-two)] to-[var(--color-black-three)] border border-[var(--color-grey-one)] rounded-md ">
+        {/* Layout z strzałkami po bokach */}
+        <div className="flex items-center justify-center sm:justify-between w-full px-4 sm:px-8 py-6 sm:py-10 gap-2 sm:gap-4">
+          {/* Strzałka w lewo */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-[var(--color-orange-one)] text-black p-1 sm:p-2 rounded shadow-md hover:bg-[var(--color-orange-two)] transition cursor-pointer"
+          >
+            <ChevronLeft className="w-3 h-8 sm:w-4 sm:h-10" />
+          </button>
 
+          {/* Zawartość hero */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-8 px-6 sm:px-10 py-6 sm:py-10">
+            {/* Tekst */}
+            <div className="flex flex-col justify-center gap-3 sm:gap-4 text-center sm:text-left max-w-xs sm:max-w-md">
+              <h1 className="text-[var(--color-white-one)] leading-tight text-4xl lg:text-5xl font-bold mb-4">
+                {slides[current].title}
+              </h1>
+              <p className="text-xs sm:text-base items-center sm:items-start text-[var(--color-white-one)] opacity-90 leading-relaxed mb-1.5">
+                {slides[current].description}
+              </p>
+              <Link
+                href="/category"
+                className="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 text-sm rounded bg-[var(--color-black-two)] text-[var(--color-orange-one)] border-2 border-[var(--color-orange-one)] hover:bg-[var(--color-orange-two)] hover:text-[var(--color-white-one)] transition w-fit mx-auto sm:mx-0"
+              >
+                Explore Category
+              </Link>
+            </div>
 
-        {/* sm-640px, md-768px, lg-1024px, xl-1280px, 2xl-1536px */}
-        {/* Zawartość hero */}
-        <div id="div0" className="flex flex-wrap sm:flex-row sm:px-8 justify-center items-center gap-4 md:mx-6 sm:mx-12 md:max-w-[80%] sm:max-w-[70%]">
-          {/* Tekst */}
-          <div id="div1" className="flex flex-col justify-between gap-4 z-10 text-left sm:max-w-[40%]">
-            <h1 className="text-[var(--color-white-one)] leading-tight text-2xl font-bold">
-              {slides[current].title}
-            </h1>
-            <p className="text-sm sm:text-base lg:text-lg  text-[var(--color-white-one)] opacity-90 leading-relaxed">
-              {slides[current].description}
-            </p>
-            <Link
-              href="/category"
-              className="inline-flex rounded bg-[var(--color-black-two)] text-[var(--color-orange-one)] border-2 border-[var(--color-orange-one)] hover:bg-[var(--color-orange-two)] hover:text-[var(--color-white-one)] transition w-fit"
-            >
-              Explore Category
-            </Link>
+            {/* Obrazek */}
+            {/* <div className="flex justify-center w-[30vw] sm:w-[40%] max-w-[400px] h-auto"> */}
+            <div className="absolute right-8 top-1/2 transform -translate-y-1/2 opacity-20 pointer-events-none">
+              <Image
+                src={slides[current].image}
+                alt={slides[current].title}
+                width={300}
+                height={300}
+                priority
+                className="w-48 h-48 object-contain transform rotate-[-15deg] transition-transform duration-500"
+              />
+            </div>
           </div>
 
-          {/* Obrazek */}
-          <div className="order-2 sm:order-none flex-shrink-0 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px]">
-            <Image
-              src={slides[current].image}
-              alt={slides[current].title}
-              width={400}
-              height={400}
-              priority
-              className="w-full h-full object-contain transform rotate-[-15deg] transition-transform duration-500"
-            />
-          </div>
+          {/* Strzałka w prawo */}
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-[var(--color-orange-one)] text-black p-1 sm:p-2 rounded shadow-md hover:bg-[var(--color-orange-two)] transition cursor-pointer"
+          >
+            <ChevronRight className="w-3 h-8 sm:w-4 sm:h-10" />
+          </button>
         </div>
-
-        {/* Strzałka w prawo */}
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-[var(--color-orange-one)] text-black p-1 rounded shadow-md hover:bg-[var(--color-orange-one)] transition cursor-pointer z-10"
-        >
-          <ChevronRight className="w-5 h-10 cursor-pointer" />
-        </button>
       </div>
 
       {/* Dots */}

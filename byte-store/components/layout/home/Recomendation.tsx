@@ -36,19 +36,19 @@ const recomendationProducts = [
 
 const Recomendation = () => {
   return (
-    <div id="recomendation" className='bg-[var(--color-black-one)] text-white' >
-      <div className="flex flex-row justify-between">
-        <div>Recomendation</div>
-        <div className="font-medium flex items-center gap-1 cursor-pointer">See all <span>&rarr;</span></div>
+    <section id="recomendation" className='bg-[var(--color-black-one)] text-white max-w-[1360px] mx-auto w-full px-4 py-8' >
+      <div className="flex flex-row justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold">Recommendation</h2>
+        <div className="font-medium flex items-center gap-1 cursor-pointer hover:text-[var(--color-orange-one)] transition-colors text-sm sm:text-base">
+          See all <span>&rarr;</span>
+        </div>
       </div>
-      <div id="card-list" className="flex flex-row gap-8 overflow-x-scroll ">
-      {/* <div id="card-list" className=" flex flex-row p-2 gap-8  overflow-x-auto"></div> */}
+      <div id="card-list" className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide">
         {recomendationProducts.map((product, index) => (
           <ProductCard key={index} {...product} />
         ))} 
       </div>
-
-    </div>
+    </section>
   )
 }
 
