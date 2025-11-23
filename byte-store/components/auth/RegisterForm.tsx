@@ -10,7 +10,11 @@ type RegisterFormData = {
   country: string;
 };
 
-const RegisterForm = () => {
+type RegisterFormProps = {
+  onSuccess: () => void;
+};
+
+const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const {
     register,
     handleSubmit,
@@ -20,8 +24,10 @@ const RegisterForm = () => {
 
   const password = watch("password");
 
-  const onSubmit = (data: RegisterFormData) => {
+  const onSubmit = async (data: RegisterFormData) => {
     console.log("Form data", data);
+    // tu bedzie await registerUser(data)
+    onSuccess(); // na razie, ekran sukcesu
   };
 
   return (
@@ -50,8 +56,7 @@ const RegisterForm = () => {
               Email
             </label>
             <input
-              {...(register("email"),
-              {
+              {...register("email", {
                 required: "Email is required",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
