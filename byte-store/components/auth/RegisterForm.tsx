@@ -25,9 +25,29 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const password = watch("password");
 
   const onSubmit = async (data: RegisterFormData) => {
-    console.log("Form data", data);
-    // tu bedzie await registerUser(data)
-    onSuccess(); // na razie, ekran sukcesu
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          phone: data.phone,
+          password: data.password,
+          country: data.country,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        console.error(json.error);
+        return;
+      }
+
+      onSuccess(); // show success screen
+    } catch (error) {
+      console.error("Register error", error);
+    }
   };
 
   return (

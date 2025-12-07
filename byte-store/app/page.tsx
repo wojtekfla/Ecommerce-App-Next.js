@@ -1,5 +1,4 @@
 import HomePage from "@/components/layout/home/HomePage";
-import HomeContent from "@/components/layout/home/HomePage";
 
 function Homepage() {
   return (

@@ -8,7 +8,7 @@ const HomePage = () => {
     <section className="w-full overflow-x-hidden">
       <div
         id="main-page"
-        className="w-full flex flex-col gap-8 sm:gap-12 bg-[var(--color-black-one)]"
+        className="w-full flex flex-col gap-8 sm:gap-12 bg-black-one"
       >
         <HeroSlider />
         <CategorySection />
