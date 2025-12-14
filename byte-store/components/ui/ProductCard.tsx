@@ -1,58 +1,73 @@
+"use client";
+
+import { Product } from "@/components/products/mockData";
 import Image from "next/image";
+import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 
-type ProductCardProps = {
-	imageSrc: string;
-	title: string;
-	description: string;
-	price: number;
-	promoPrice?: number;
-};
+interface ProductCardProps {
+  product: Product;
+  onAddToCart?: () => void;
+}
 
-const ProductCard = ({
-	imageSrc,
-	title,
-	description,
-	price,
-	promoPrice,
-}: ProductCardProps) => {
-	return (
-		<div
-			id="div-1"
-			className="relative flex flex-row rounded bg-[var(--color-black-two)] text-white w-[300px] min-h-[300px] border border-gray-700 p-2">
-			<div id="div-2" className="flex-1 flex-col justify-start gap-2 ">
-				<Image
-					src={imageSrc}
-					alt={title}
-					width={200}
-					height={200}
-					className="rounded-md object-cover"
-				/>
-				<div className="bg-[var(--color-black-one)] text-white p-0.5 rounded absolute top-5 left-3 ">
-					<ShoppingCart />
-				</div>
-				<div id="div-3" className="max-w-[300px] mt-2 flex flex-col gap-2 flex-1">
-					<button className="bg-[var(--color-orange-two)] rounded text-white text-xs py-1 px-2 w-fit">
-						{title}
-					</button>
-					<div className="text-sm">
-            {description}
+const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault(); // prevent link navigation
+    e.stopPropagation();
+    onAddToCart?.();
+  };
+
+  return (
+    <Link href={`/products/${product.slug}`}>
+      <div className="relative flex flex-col rounded bg-black-two text-white w-full lg:w-10/12 min-h-[300px] border border-grey-one p-2">
+        {/* Image Section */}
+        <div className="relative bg-white p-4">
+          <button
+            onClick={handleAddToCart}
+            title="Add to cart"
+            className="absolute top-2 left-2 p-2 bg-black rounded-lg hover:scale-110"
+          >
+            <ShoppingCart className="w-4 h-4" />
+          </button>
+
+          {/* Product Image */}
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            width={220}
+            height={200}
+            className="w-full h-40 object-contain"
+            priority={false}
+          />
+        </div>
+        {/* Content section */}
+        <div className="p-4 text-white">
+          {/* Category Badge */}
+          <div className="mb-3">
+            <span className="bg-orange-one text-white text-xs font-medium px-3 py-1 rounded">
+              {product.categoryId.charAt(0).toUpperCase() +
+                product.categoryId.slice(1)}
+            </span>
           </div>
-          <div className="text-amber-300 mt-auto">
-            {promoPrice ? (
-              <>
-                <span>${promoPrice.toFixed(2)}</span>
-                <span className="line-through text-gray-400">${price.toFixed(2)}</span>
-              </>
-            ) : (
-              <span>${price.toFixed(2)}</span>
-            )
-          }
+
+          {/* Product name */}
+          <h3 className="text-white text-sm font-medium mb-2 line-clamp-2">
+            {product.name}
+          </h3>
+
+          {/* Price */}
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold">${product.price}</span>
+            {product.originalPrice && (
+              <span className="text-gray-two text-sm line-through">
+                ${product.originalPrice}
+              </span>
+            )}
           </div>
-				</div>
-			</div>
-		</div>
-	);
+        </div>
+      </div>
+    </Link>
+  );
 };
 
 export default ProductCard;

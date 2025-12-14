@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "./mockData";
+import { Product } from "../mockData";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
@@ -10,7 +10,7 @@ interface ProductCardProps {
   onAddToCart?: () => void;
 }
 
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+const ProductCard2 = ({ product, onAddToCart }: ProductCardProps) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); // prevent link navigation
     e.stopPropagation();
@@ -71,4 +71,4 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   );
 };
 
-export default ProductCard;
+export default ProductCard2;

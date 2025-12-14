@@ -1,5 +1,5 @@
-import ProductsSidebar from "./ProductsSidebar";
-import ProductsContainer from "./ProductsContainer";
+import ProductsSidebar from "./sidebar/ProductsSidebar";
+import ProductsContainer from "./container/ProductsContainer";
 
 const ProductsPage = () => {
   return (
