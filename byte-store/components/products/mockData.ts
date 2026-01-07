@@ -6,6 +6,7 @@ export interface Product {
   price: number;
   stock: number;
   imageUrl: string;
+  images?: string[];
   categoryId: string; // FK - Category
   originalPrice?: number;
   badge?: 'Featured' | 'Sale' | 'New';
@@ -40,20 +41,20 @@ export const mockCategories: Category[] = [
     count: 12
   },
   {
-    id: "keyboard",
-    name: "Keyboards",
-    description: "Mechanical and wireless keyboards for gaming and productivity",
-    image: "/images/categories/keyboard.jpg",
-    exploreInfo: "Premium typing experience with customizable RGB lighting",
-    count: 8
-  },
-  {
     id: "headphones",
     name: "Headphones",
     description: "Premium audio equipment for gaming, music, and calls",
     image: "/images/categories/headphones.jpg",
     exploreInfo: "Immersive sound quality with noise cancellation technology",
     count: 15
+  },
+  {
+    id: "keyboard",
+    name: "Keyboards",
+    description: "Mechanical and wireless keyboards for gaming and productivity",
+    image: "/images/categories/keyboard.jpg",
+    exploreInfo: "Premium typing experience with customizable RGB lighting",
+    count: 8
   },
   {
     id: "monitor",
@@ -70,6 +71,30 @@ export const mockCategories: Category[] = [
     image: "/images/categories/tablet.jpg",
     exploreInfo: "Precision tools for creative professionals and digital art enthusiasts",
     count: 6
+  },
+  {
+  id: "webcam",
+  name: "Webcams",
+  description: "High-quality webcams for streaming, remote work, and video calls",
+  image: "/images/categories/webcam.jpg",
+  exploreInfo: "Enjoy crisp and clear video with advanced sensors and autofocus",
+  count: 11
+  },
+  {
+  id: "microphone",
+  name: "Microphones",
+  description: "Studio and streaming microphones for clear and professional audio",
+  image: "/images/categories/microphone.jpg",
+  exploreInfo: "Achieve crystal-clear recordings with noise reduction and high sensitivity",
+  count: 10
+  },
+  {
+  id: "chair",
+  name: "Gaming Chairs",
+  description: "Comfortable ergonomic chairs designed for long gaming or work sessions",
+  image: "/images/categories/chair.jpg",
+  exploreInfo: "Stay supported with adjustable lumbar systems and premium materials",
+  count: 5
   }
 ];
 
@@ -83,6 +108,12 @@ export const mockProducts: Product[] = [
     originalPrice: 35.99,
     stock: 15,
     imageUrl: "/images/products/rec-mouse1.png",
+    images: [
+      "/images/products/rec-mouse1.png",
+      "/images/products/rec-mouse2.png",
+      "/images/products/rec-mouse1.png",
+      "/images/products/rec-mouse2.png"
+    ],
     categoryId: "mouse",
     badge: "Featured",
     rating: 4.5,
@@ -157,7 +188,7 @@ export const mockProducts: Product[] = [
     name: "ROG Swift PG259QN Gaming Monitor",
     description: "25-inch Full HD gaming monitor with 360Hz refresh rate for competitive esports.",
     price: 299.99,
-    stock: 3,
+    stock: 0,
     imageUrl: "/images/products/rec-monitor2.png",
     categoryId: "monitor",
     badge: "Sale",

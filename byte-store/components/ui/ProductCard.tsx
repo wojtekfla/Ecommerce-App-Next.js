@@ -18,7 +18,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   };
 
   return (
-    <Link href={`/products/${product.slug}`}>
+    <Link href={`/products/${product.id}`}>
       <div className="relative flex flex-col rounded bg-black-two text-white w-full lg:w-10/12 min-h-[300px] border border-grey-one p-2">
         {/* Image Section */}
         <div className="relative bg-white p-4">
