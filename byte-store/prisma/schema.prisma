@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,11 +10,154 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model Address {
+  id       Int     @id @default(autoincrement())
+  userId   Int     @unique
+  street   String?
+  city     String?
+  state    String?
+  postCode String?
+  country  String?
+  // relations
+  user     User    @relation(fields: [userId], references: [id])
+}
+
 model User {
   id           Int      @id @default(autoincrement())
+  firstName    String?
+  lastName     String?
   email        String   @unique
   mobileNumber String   @unique
-  password     String
-  country      String
+  passwordHash String
+  avatarUrl    String?
+  country      String?
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  // relations
+  address      Address? // jeden-do-jednego
+  orders       Order[]
+  cart         Cart?
+}
+
+model Brand {
+  id          String    @id
+  name        String    @unique
+  description String?
+  logoUrl     String?
+  createdAt   DateTime  @default(now())
+  // relations
+  products    Product[]
+}
+
+model Category {
+  id          String    @id
+  name        String    @unique
+  description String?
+  image       String?
+  exploreInfo String?
+  createdAt   DateTime  @default(now())
+  // relations
+  products    Product[]
+}
+
+model Product {
+  id             String      @id
+  name           String
+  description    String?
+  technicalSpecs String?
+  price          Decimal     @db.Decimal(10, 2)
+  originalPrice  Decimal?    @db.Decimal(10, 2)
+  imageUrl       String
+  images         String[]
+  rating         Float?      @default(0)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  // foreign Keys
+  categoryId     String
+  brandId        String
+  // relations  
+  category       Category    @relation(fields: [categoryId], references: [id])
+  brand          Brand       @relation(fields: [brandId], references: [id])
+  stocks         Stock[]
+  cartItems      CartItem[]
+  orderItems     OrderItem[]
+}
+
+model Stock {
+  id         String      @id
+  productId  String
+  color      String
+  amount     Int
+  // relations
+  product    Product     @relation(fields: [productId], references: [id])
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+}
+
+model Cart {
+  id            String     @id @default(cuid())
+  userId        Int?       @unique // null = quest cart
+  sessionCartId String     @unique // cookie id dla quest
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  // relations
+  user          User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items         CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  productId String
+  stockId   String
+  quantity  Int
+  createdAt DateTime @default(now())
+  // relations 
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
+  stock     Stock    @relation(fields: [stockId], references: [id])
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  orderNumber       String      @unique @default(cuid())
+  userId            Int
+  totalAmount       Decimal     @db.Decimal(10, 2)
+  status            OrderStatus @default(PENDING)
+  paymentMethod     String?
+  shippingMethod    String?
+  shippingPrice     Decimal?    @db.Decimal(10, 2)
+  shippingInsurance Decimal?    @db.Decimal(10, 2)
+  serviceFees       Decimal?    @db.Decimal(10, 2)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  // relations
+  user              User        @relation(fields: [userId], references: [id])
+  orderItems        OrderItem[]
+}
+
+model OrderItem {
+  id                String   @id
+  orderId           String
+  productId         String
+  stockId           String
+  quantity          Int
+  priceAtPurchase   Decimal  @db.Decimal(10, 2)
+  productProtection Decimal? @db.Decimal(10, 2)
+  message           String?
+  // relations
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product           Product  @relation(fields: [productId], references: [id])
+  stock             Stock    @relation(fields: [stockId], references: [id])
+
+  // constraints
+  @@unique([orderId, productId, stockId]) // unique per color!
 }

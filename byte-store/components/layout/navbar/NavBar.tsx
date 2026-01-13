@@ -38,7 +38,7 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              href="/products"
+              href="/product"
               className={`${
                 pathname === "/product" ? "text-orange-one)" : ""
               } text-sm font-medium transition-colors`}

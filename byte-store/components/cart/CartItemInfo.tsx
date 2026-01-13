@@ -19,7 +19,7 @@ const CartItemInfo = ({ name, price, category }: CartItemInfoProps) => {
       <div>
         {/* Price */}
         <div className="text-white font-bold text-lg mt-2">
-          ${price.toFixed(2)}
+          ${Number(price).toFixed(2)}
         </div>
       </div>
     </div>

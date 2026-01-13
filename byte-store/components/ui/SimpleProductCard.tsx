@@ -36,7 +36,7 @@ const SimpleProductCard = ({
           id="div-3"
           className="max-w-[300px] mt-2 flex flex-col gap-2 flex-1"
         >
-          <button className="bg-[var(--color-orange-two)] rounded text-white text-xs py-1 px-2 w-fit">
+          <button className="bg-orange-one rounded text-white text-xs py-1 px-2 w-fit">
             {title}
           </button>
           <div className="text-sm">{description}</div>
@@ -45,11 +45,11 @@ const SimpleProductCard = ({
               <>
                 <span>${promoPrice.toFixed(2)}</span>
                 <span className="line-through text-gray-400">
-                  ${price.toFixed(2)}
+                  ${Number(price).toFixed(2)}
                 </span>
               </>
             ) : (
-              <span>${price.toFixed(2)}</span>
+              <span>${Number(price).toFixed(2)}</span>
             )}
           </div>
         </div>

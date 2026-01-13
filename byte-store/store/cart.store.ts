@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { CartStore } from "@/lib/cart.types";
 
-
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
@@ -66,6 +65,49 @@ export const useCartStore = create<CartStore>()(
         return get().items
           .filter(item => item.selected)
           .reduce((sum, item) => sum + item.price * item.quantity, 0);
+      },
+
+      // Backend sync methods  
+      syncToDatabase: async () => {
+        const items = get().items;
+        if (typeof window !== 'undefined' && items.length > 0) {
+          try {
+            const { syncCartToDatabase } = await import('@/lib/actions/cart.actions');
+            await syncCartToDatabase(items);
+          } catch (error) {
+            console.error('Sync failed:', error);
+          }
+        }
+      },
+
+      loadFromDatabase: async () => {
+        if (typeof window !== 'undefined') {
+          try {
+            const { loadCartFromDatabase } = await import('@/lib/actions/cart.actions');
+            const items = await loadCartFromDatabase();
+            if (items && items.length > 0) {
+              set({ items });
+            }
+          } catch (error) {
+            console.error('Load failed:', error);
+          }
+        }
+      },
+
+      // Auto-sync wrapper methods
+      addItemWithSync: async (item) => {
+        get().addItem(item);
+        await get().syncToDatabase();
+      },
+
+      updateQuantityWithSync: async (id, quantity) => {
+        get().updateQuantity(id, quantity);
+        await get().syncToDatabase();
+      },
+
+      removeItemWithSync: async (id) => {
+        get().removeItem(id);
+        await get().syncToDatabase();
       },
     }),
     {

@@ -1,23 +1,23 @@
 "use client";
 
 import { useCartStore } from "@/store/cart.store";
+import { useRouter } from "next/navigation";
 
 interface CartSummaryProps {
   className: string;
 }
 
 const CartSummary = ({ className = "" }: CartSummaryProps) => {
+  const router = useRouter();
   const items = useCartStore((state) => state.items);
   const totalItems = useCartStore((state) => state.totalItems);
   const subtotal = useCartStore((state) => state.subtotal);
-
   const selectedTotal = useCartStore((state) => state.selectedTotal);
   const selectedItems = items.filter((item) => item.selected);
   const selectedCount = selectedItems.reduce(
     (sum, item) => sum + item.quantity,
     0
   );
-
   const showSelected = selectedItems.length > 0;
   const displayCount = showSelected ? selectedCount : totalItems;
   const displayTotal = showSelected ? selectedTotal : subtotal;
@@ -26,7 +26,7 @@ const CartSummary = ({ className = "" }: CartSummaryProps) => {
     if (items.length === 0) return;
 
     console.log("Proceeding to checkout...");
-    // todo router.push('/checkout')
+    router.push("/checkout");
   };
 
   if (items.length === 0) {
